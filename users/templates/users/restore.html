@@ -13,9 +13,14 @@
             <div class="card-body">
                 {% csrf_token %}
                 Введите свой email
-                <label for="email"></label>
-                <input type="text" name="email" class="form-control" id="email" placeholder="email">
-                <button type="submit" class="btn btn-success">Восстановить</button>
+                <div>
+                    <label for="email"></label>
+                    <input type="text" name="email" class="form-control" id="email" placeholder="email">
+                </div>
+
+                <div class="card-footer" align="center">
+                    <button type="submit" class="btn btn-success">Восстановить</button>
+                </div>
             </div>
 
             <div class="card-footer"></div>
