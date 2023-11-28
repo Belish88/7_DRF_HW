@@ -1,9 +1,10 @@
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from django.views.generic import TemplateView
+from rest_framework import routers
 
 from users.apps import UsersConfig
-from users.views import RegisterView, ProfileView, activate, RestoreView, main
+from users.views import RegisterView, ProfileView, activate, RestoreView, main, UserViewSet
 
 app_name = UsersConfig.name
 
@@ -18,3 +19,8 @@ urlpatterns = [
     path('activate/<token>', activate, name='activate'),
     path('restore/', RestoreView.as_view(), name='restore'),
 ]
+
+router = routers.SimpleRouter()
+router.register('user', UserViewSet)
+
+urlpatterns += router.urls

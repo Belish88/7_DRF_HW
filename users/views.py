@@ -4,10 +4,12 @@ from django.core.mail import send_mail
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView, TemplateView
+from rest_framework.viewsets import ModelViewSet
 
 import users
 from users.forms import UserRegisterForm, UserProfileForm
 from users.models import User
+from users.serializer import UserSerializer
 from users.utils import create_token
 
 
@@ -15,6 +17,11 @@ def main(request):
     context = {
     }
     return render(request, 'users/main.html', context)
+
+
+class UserViewSet(ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
 
 
 class RegisterView(CreateView):
