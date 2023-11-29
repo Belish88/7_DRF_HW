@@ -6,10 +6,6 @@ from school.models import Payments
 from school.seriallizers.payments import PaymentsSerializer
 
 
-# class PaymentsViewSet(ModelViewSet):
-#     queryset = Payments.objects.all()
-#     serializer_class = PaymentsSerializer
-
 class PaymentsListAPIView(ListAPIView):
     queryset = Payments.objects.all()
     serializer_class = PaymentsSerializer
