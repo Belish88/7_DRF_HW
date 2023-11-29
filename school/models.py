@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 from users.models import NULLABLE
 
@@ -29,3 +30,28 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'урок'
         verbose_name_plural = 'уроки'
+
+
+TRANSFER = 'TR'
+CASH = 'CH'
+
+METHOD_CHOICES = [
+    (TRANSFER, 'Перевод'),
+    (CASH, 'Наличными'),
+]
+
+
+class Payments(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE, verbose_name='урок')
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE, verbose_name='пользователь')
+    pay = models.PositiveIntegerField(verbose_name='сумма оплаты')
+    date = models.DateField(default=now, verbose_name='дата оплаты')
+    method = models.CharField(default=TRANSFER, choices=METHOD_CHOICES, max_length=100, verbose_name='способ оплаты')
+
+    def __str__(self):
+        return f'{self.user} : {self.course if self.course else self.lesson} - {self.pay}'
+
+    class Meta:
+        verbose_name = 'платёж'
+        verbose_name_plural = 'платежи'
