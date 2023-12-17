@@ -27,7 +27,6 @@ class Lesson(models.Model):
     description = models.TextField(**NULLABLE, verbose_name='Описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='автор')
 
-
     def __str__(self):
         return f'{self.title}'
 
@@ -59,3 +58,16 @@ class Payments(models.Model):
     class Meta:
         verbose_name = 'платёж'
         verbose_name_plural = 'платежи'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE)
+    is_active = models.BooleanField(default=True, verbose_name='подписка')
+
+    def __str__(self):
+        return f'{self.user} : {self.course} - {self.is_active}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'
