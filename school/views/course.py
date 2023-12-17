@@ -12,9 +12,9 @@ class CourseCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
-        new_lesson = serializer.save()
-        new_lesson.owner = self.request.user
-        new_lesson.save()
+        new_course = serializer.save()
+        new_course.owner = self.request.user
+        new_course.save()
 
 
 class CourseListAPIView(ListAPIView):
