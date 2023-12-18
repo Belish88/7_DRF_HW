@@ -62,7 +62,7 @@ class Payments(models.Model):
 
 class Subscription(models.Model):
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, related_name="subscription")
     is_active = models.BooleanField(default=True, verbose_name='подписка')
 
     def __str__(self):
