@@ -22,11 +22,10 @@ class Course(models.Model):
 class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
     title = models.CharField(max_length=150, verbose_name='название')
-    img = models.ImageField(upload_to='course/', **NULLABLE, verbose_name='превью')
-    video = models.ImageField(upload_to='course/', **NULLABLE, verbose_name='видео')
+    img = models.ImageField(upload_to='lesson/img/', **NULLABLE, verbose_name='превью')
+    video = models.URLField(**NULLABLE, verbose_name='видео')
     description = models.TextField(**NULLABLE, verbose_name='Описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='автор')
-
 
     def __str__(self):
         return f'{self.title}'
@@ -59,3 +58,16 @@ class Payments(models.Model):
     class Meta:
         verbose_name = 'платёж'
         verbose_name_plural = 'платежи'
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, related_name="subscription")
+    is_active = models.BooleanField(default=True, verbose_name='подписка')
+
+    def __str__(self):
+        return f'{self.user} : {self.course} - {self.is_active}'
+
+    class Meta:
+        verbose_name = 'подписка'
+        verbose_name_plural = 'подписки'

@@ -2,6 +2,7 @@ from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView,
 from rest_framework.permissions import IsAuthenticated
 
 from school.models import Course
+from school.paginators import CoursePaginator
 from school.permissions import IsOwner, IsModerator
 from school.seriallizers.course import CourseSerializer
 
@@ -12,15 +13,16 @@ class CourseCreateAPIView(CreateAPIView):
     permission_classes = [IsAuthenticated, ~IsModerator]
 
     def perform_create(self, serializer):
-        new_lesson = serializer.save()
-        new_lesson.owner = self.request.user
-        new_lesson.save()
+        new_course = serializer.save()
+        new_course.owner = self.request.user
+        new_course.save()
 
 
 class CourseListAPIView(ListAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CoursePaginator
 
 
 class CourseRetrieveAPIView(RetrieveAPIView):
