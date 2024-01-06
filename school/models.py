@@ -10,6 +10,7 @@ class Course(models.Model):
     img = models.ImageField(upload_to='course/', **NULLABLE, verbose_name='превью')
     description = models.TextField(**NULLABLE, verbose_name='Описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='автор')
+    price = models.PositiveIntegerField(default=0, verbose_name='цена')
 
     def __str__(self):
         return f'{self.title}'
@@ -26,6 +27,7 @@ class Lesson(models.Model):
     video = models.URLField(**NULLABLE, verbose_name='видео')
     description = models.TextField(**NULLABLE, verbose_name='Описание')
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, **NULLABLE, verbose_name='автор')
+    price = models.PositiveIntegerField(default=0, verbose_name='цена')
 
     def __str__(self):
         return f'{self.title}'
@@ -48,9 +50,10 @@ class Payments(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, **NULLABLE, verbose_name='курс')
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, **NULLABLE, verbose_name='урок')
     user = models.ForeignKey('users.User', on_delete=models.CASCADE, **NULLABLE, verbose_name='пользователь')
-    pay = models.PositiveIntegerField(verbose_name='сумма оплаты')
-    date = models.DateField(default=now, verbose_name='дата оплаты')
+    pay = models.PositiveIntegerField(**NULLABLE, verbose_name='сумма оплаты')
+    date = models.DateTimeField(default=now, verbose_name='дата оплаты')
     method = models.CharField(default=TRANSFER, choices=METHOD_CHOICES, max_length=100, verbose_name='способ оплаты')
+    sessions_url = models.CharField(**NULLABLE, verbose_name='URL')
 
     def __str__(self):
         return f'{self.user} : {self.course if self.course else self.lesson} - {self.pay}'
