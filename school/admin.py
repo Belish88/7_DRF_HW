@@ -5,12 +5,12 @@ from school.models import Course, Lesson, Payments, Subscription
 
 @admin.register(Course)
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'title', 'owner')
+    list_display = ('pk', 'title', 'owner', 'price')
 
 
 @admin.register(Lesson)
 class LessonAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'title', 'course', 'owner', 'video')
+    list_display = ('pk', 'title', 'course', 'owner', 'video', 'price')
 
 
 @admin.register(Payments)

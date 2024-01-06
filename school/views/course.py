@@ -10,7 +10,7 @@ from school.seriallizers.course import CourseSerializer
 class CourseCreateAPIView(CreateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    permission_classes = [IsAuthenticated, ~IsModerator]
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         new_course = serializer.save()
