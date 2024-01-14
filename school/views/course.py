@@ -5,6 +5,7 @@ from school.models import Course
 from school.paginators import CoursePaginator
 from school.permissions import IsOwner, IsModerator
 from school.seriallizers.course import CourseSerializer
+from school.tasks import curse_update_message
 
 
 class CourseCreateAPIView(CreateAPIView):
@@ -35,6 +36,10 @@ class CourseUpdateAPIView(UpdateAPIView):
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
     permission_classes = [IsOwner | IsModerator]
+
+    def perform_update(self, serializer):
+        obj = serializer.save()
+        curse_update_message.delay(obj.id)
 
 
 class CourseDestroyAPIView(DestroyAPIView):
