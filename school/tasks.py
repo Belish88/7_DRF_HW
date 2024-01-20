@@ -9,9 +9,10 @@ from config.settings import EMAIL_HOST
 
 @shared_task
 def curse_update_message(course_id, message=None):
+    print('curse_update_message')
     course = Course.objects.get(pk=course_id)
     if not message:
-        message = f"Обновлен курс {course.name}"
+        message = f"Обновлен курс {course.title}"
     # формирование сообщений
     message_list = get_message_list(course, message)
 
@@ -26,7 +27,7 @@ def curse_update_message(course_id, message=None):
         except OSError:
             server_response = f'Хост ({EMAIL_HOST}) недоступен'
         else:
-            server_response = (f'Сообщение о обновлении курса "{course.name}" '
+            server_response = (f'Сообщение о обновлении курса "{course.title}" '
                                f'успешно отправлено {len(message_list)} пользователям')
 
         print(server_response)
@@ -34,12 +35,13 @@ def curse_update_message(course_id, message=None):
 
 
 def get_message_list(course, message):
+    print('get_message_list')
     message_list = []
     for subscription in Subscription.objects.filter(course=course):
         body = (f'Привет {subscription.user.first_name}!\n'
                 f'{message} \n\n'
                 f'Данное сообщение сформировано автоматически. Просьба не отвечать.')
-        message = (f"Обновление на курсе {course.name}",
+        message = (f"Обновление на курсе {course.title}",
                    body,
                    None,
                    [subscription.user.email])
