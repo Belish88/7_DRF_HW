@@ -38,6 +38,7 @@ class CourseUpdateAPIView(UpdateAPIView):
     permission_classes = [IsOwner | IsModerator]
 
     def perform_update(self, serializer):
+        print('perform_update')
         obj = serializer.save()
         curse_update_message.delay(obj.id)
 
